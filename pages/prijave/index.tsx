@@ -38,8 +38,6 @@ const ApplicationsPage = () => {
     search: debouncedSearchJobs,
   });
 
-  console.log("jobs", jobs);
-
   const columns: ColumnsType<Application> = [
     {
       title: "Posao",
@@ -77,7 +75,7 @@ const ApplicationsPage = () => {
     _filters: any,
     sorter: SorterResult<Application> | SorterResult<Application>[]
   ) => {
-    console.log("sorter", sorter);
+    console.log("_filters", _filters);
 
     if ("field" in sorter && "order" in sorter)
       setSort(`${sorter.field}|${sorter.order === "descend" ? "desc" : "asc"}`);
