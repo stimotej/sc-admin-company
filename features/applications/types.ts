@@ -37,4 +37,5 @@ export interface ApplicationsFilters {
   orderby?: string;
   search?: string;
   page?: number;
+  jobs?: string;
 }

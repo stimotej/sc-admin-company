@@ -4,6 +4,11 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { useEffect } from "react";
 import axios from "axios";
+import "dayjs/locale/hr";
+import hrHr from "antd/locale/hr_HR";
+import dayjs from "dayjs";
+
+dayjs.locale("hr");
 
 const queryClient = new QueryClient();
 
@@ -21,7 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ConfigProvider theme={myTheme}>
+      <ConfigProvider theme={myTheme} locale={hrHr}>
         <Component {...pageProps} />
       </ConfigProvider>
     </QueryClientProvider>

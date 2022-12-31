@@ -34,6 +34,7 @@ export const useApplications = (
           orderby: newFilters?.orderby,
           order: newFilters?.order,
           search: newFilters?.search,
+          jobs: newFilters?.jobs,
           per_page: applicationsPerPage,
           page: newFilters?.page,
         },

@@ -3,18 +3,23 @@ import Layout from "../../components/Layout";
 import dayjs from "dayjs";
 import useDebounce from "../../utils/useDebounce";
 
-import { CloseCircleFilled } from "@ant-design/icons";
+import { CloseCircleFilled, FilterFilled } from "@ant-design/icons";
 import { Table, Input, Empty } from "antd";
 import { useApplications } from "../../features/applications";
 
 import type { Application } from "../../features/applications/types";
 import type { ColumnsType } from "antd/es/table";
-import type { TableRowSelection, SorterResult } from "antd/es/table/interface";
+import type {
+  TableRowSelection,
+  SorterResult,
+  FilterValue,
+} from "antd/es/table/interface";
 import { useJobs } from "../../features/jobs";
 
 const ApplicationsPage = () => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("date|desc");
+  const [jobsFilter, setJobsFilter] = useState("");
   const [page, setPage] = useState(1);
 
   const debouncedSearch = useDebounce(search, 300);
@@ -28,6 +33,7 @@ const ApplicationsPage = () => {
     orderby: sort?.split("|")?.[0],
     order: sort?.split("|")?.[1],
     search: debouncedSearch,
+    jobs: jobsFilter,
     page,
   });
 
@@ -44,6 +50,7 @@ const ApplicationsPage = () => {
       dataIndex: "job",
       render: (job) => job?.title,
       filters: jobs?.map((job) => ({ text: job.title, value: job.id })),
+      filterSearch: true,
     },
     {
       title: "Student",
@@ -72,10 +79,10 @@ const ApplicationsPage = () => {
 
   const handleChangeTable = (
     _pagination: any,
-    _filters: any,
+    filters: Record<string, FilterValue | null>,
     sorter: SorterResult<Application> | SorterResult<Application>[]
   ) => {
-    console.log("_filters", _filters);
+    setJobsFilter(filters.job?.join(",") || "");
 
     if ("field" in sorter && "order" in sorter)
       setSort(`${sorter.field}|${sorter.order === "descend" ? "desc" : "asc"}`);
