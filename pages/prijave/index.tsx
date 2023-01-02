@@ -3,7 +3,7 @@ import Layout from "../../components/Layout";
 import dayjs from "dayjs";
 import useDebounce from "../../utils/useDebounce";
 
-import { CloseCircleFilled, FilterFilled } from "@ant-design/icons";
+import { CloseCircleFilled } from "@ant-design/icons";
 import { Table, Input, Empty } from "antd";
 import { useApplications } from "../../features/applications";
 
@@ -15,6 +15,7 @@ import type {
   FilterValue,
 } from "antd/es/table/interface";
 import { useJobs } from "../../features/jobs";
+import getApplicationStatus from "../../utils/getApplicationStatus";
 
 const ApplicationsPage = () => {
   const [search, setSearch] = useState("");
@@ -37,12 +38,7 @@ const ApplicationsPage = () => {
     page,
   });
 
-  const [searchJobs, setSearchJobs] = useState("");
-
-  const debouncedSearchJobs = useDebounce(searchJobs, 300);
-  const { data: jobs } = useJobs({
-    search: debouncedSearchJobs,
-  });
+  const { data: jobs } = useJobs();
 
   const columns: ColumnsType<Application> = [
     {
@@ -63,6 +59,24 @@ const ApplicationsPage = () => {
       defaultSortOrder: "descend",
       render: (createdAt) => dayjs(createdAt).format("DD.MM.YYYY"),
       sorter: true,
+    },
+    // {
+    //   title: "Radnje",
+    //   dataIndex: "status",
+    //   render: (status) => dayjs(status).format("DD.MM.YYYY"),
+    // },
+    {
+      title: "Status",
+      dataIndex: "status",
+      render: (status) => {
+        const appStatus = getApplicationStatus(status);
+        return (
+          <div className={`flex gap-2 ${appStatus.className}`}>
+            <appStatus.icon />
+            {appStatus.title}
+          </div>
+        );
+      },
     },
   ];
 

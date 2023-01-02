@@ -14,7 +14,7 @@ import type { AxiosError } from "axios";
 import { message } from "antd";
 
 export const useJobs = (
-  filters: JobsFilters,
+  filters?: JobsFilters,
   options?: UseQueryOptions<JobResponse[], AxiosError, Job[], string[] | {}[]>
 ) => {
   const queryClient = useQueryClient();
@@ -45,8 +45,8 @@ export const useJobs = (
   };
 
   const queryData = useQuery(
-    jobKeys.jobsFiltered(filters),
-    async () => fetchJobs(filters),
+    jobKeys.jobsFiltered(filters || {}),
+    async () => fetchJobs(filters || {}),
     {
       select: (jobs) => jobs.map((job) => formatJob(job)),
       keepPreviousData: true,
@@ -56,7 +56,7 @@ export const useJobs = (
   );
 
   useEffect(() => {
-    if (filters.page) {
+    if (filters && filters.page) {
       if (!queryData.isPreviousData && filters?.page < totalPages.current)
         queryClient.prefetchQuery(
           jobKeys.jobsFiltered({ ...filters, page: filters?.page + 1 }),

@@ -1,3 +1,10 @@
+export type ApplicationStatus =
+  | "active"
+  | "invited"
+  | "accepted"
+  | "rejected"
+  | "inactive";
+
 export interface Application {
   id: number;
   title: string;
@@ -5,8 +12,8 @@ export interface Application {
   updatedAt: string;
   job: Job;
   student: Student;
+  status: ApplicationStatus;
 }
-
 export interface ApplicationResponse {
   id: number;
   date: string;
@@ -15,6 +22,9 @@ export interface ApplicationResponse {
   student: Student;
   title: {
     rendered: string;
+  };
+  meta: {
+    status: ApplicationStatus;
   };
 }
 
