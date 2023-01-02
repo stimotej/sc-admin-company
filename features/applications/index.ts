@@ -24,7 +24,9 @@ export const useApplications = (
   const totalItems = useRef(0);
   const totalPages = useRef(0);
 
-  const fetchApplications = async (newFilters: ApplicationsFilters) => {
+  const fetchApplications = async (
+    newFilters: ApplicationsFilters
+  ): Promise<ApplicationResponse[]> => {
     const userId = window.localStorage.getItem("user_id");
 
     const response = await axios.get(
@@ -37,6 +39,7 @@ export const useApplications = (
           jobs: newFilters?.jobs,
           per_page: applicationsPerPage,
           page: newFilters?.page,
+          company: userId,
         },
       }
     );

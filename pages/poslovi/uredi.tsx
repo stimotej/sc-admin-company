@@ -8,7 +8,6 @@ import {
   Radio,
   Segmented,
   Tag,
-  message,
   Spin,
   Result,
 } from "antd";
@@ -19,8 +18,6 @@ import Layout from "../../components/Layout";
 import { useCreateJob, useJob, useUpdateJob } from "../../features/jobs";
 
 const EditJobPage = () => {
-  const [messageApi, contextHolder] = message.useMessage();
-
   const router = useRouter();
 
   const jobId = router.query?.id;
@@ -30,8 +27,8 @@ const EditJobPage = () => {
     job_type: "privremeni_posao",
     job_location: "",
     job_range: [],
-    job_payment_rate: 29.3,
-    job_payment_rate_max: 29.3,
+    job_payment_rate: 4.38,
+    job_payment_rate_max: 4.38,
     job_work_hours: 1,
     job_positions: 1,
     job_active_until: "",
@@ -48,14 +45,15 @@ const EditJobPage = () => {
     isRefetching: isRefetchingJob,
   } = useJob(+(jobId || ""), {
     enabled: !!jobId,
+    refetchOnWindowFocus: false,
     onSuccess: (data) => {
       form.setFieldsValue({
         job_title: data?.title || "",
         job_type: data?.type || "privremeni_posao",
         job_location: data?.location || "",
         job_range: [dayjs(data?.start), dayjs(data?.end)] || [],
-        job_payment_rate: data?.paymentRate || 29.3,
-        job_payment_rate_max: data?.paymentRateMax || 29.3,
+        job_payment_rate: data?.paymentRate || 4.38,
+        job_payment_rate_max: data?.paymentRateMax || 4.38,
         job_work_hours: data?.workHours || 1,
         job_positions: data?.positions || 1,
         job_active_until: dayjs(data?.activeUntil) || "",
@@ -95,34 +93,14 @@ const EditJobPage = () => {
         { job: jobData, id: +jobId },
         {
           onSuccess: () => {
-            messageApi.open({
-              type: "success",
-              content: "Posao je uspješno spremljen.",
-            });
             router.back();
-          },
-          onError: () => {
-            messageApi.open({
-              type: "error",
-              content: "Greška kod spremanja posla.",
-            });
           },
         }
       );
     } else {
       createJob(jobData, {
         onSuccess: () => {
-          messageApi.open({
-            type: "success",
-            content: "Posao je uspješno izrađen.",
-          });
           router.back();
-        },
-        onError: () => {
-          messageApi.open({
-            type: "error",
-            content: "Greška kod izrade posla.",
-          });
         },
       });
     }
@@ -158,7 +136,6 @@ const EditJobPage = () => {
 
   return (
     <Layout>
-      {contextHolder}
       <h1 className="text-lg font-bold">
         {jobId ? "Izmijeni posao" : "Dodaj posao"}
       </h1>
@@ -238,7 +215,12 @@ const EditJobPage = () => {
             ]}
             className="flex-1"
           >
-            <InputNumber min={29.3} step={0.1} className="w-full" />
+            <InputNumber
+              min={4.38}
+              step={0.01}
+              addonAfter="€"
+              className="w-full"
+            />
           </Form.Item>
 
           {paymentType === "Raspon satnice" ? (
@@ -253,7 +235,12 @@ const EditJobPage = () => {
               ]}
               className="flex-1"
             >
-              <InputNumber min={29.3} step={0.1} className="w-full" />
+              <InputNumber
+                min={4.38}
+                step={0.01}
+                addonAfter="€"
+                className="w-full"
+              />
             </Form.Item>
           ) : null}
 

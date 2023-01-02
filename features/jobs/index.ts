@@ -11,6 +11,7 @@ import { useEffect, useRef } from "react";
 
 import type { Job, JobResponse, JobsFilters } from "./types";
 import type { AxiosError } from "axios";
+import { message } from "antd";
 
 export const useJobs = (
   filters: JobsFilters,
@@ -22,7 +23,7 @@ export const useJobs = (
   const totalItems = useRef(0);
   const totalPages = useRef(0);
 
-  const fetchJobs = async (newFilters: JobsFilters) => {
+  const fetchJobs = async (newFilters: JobsFilters): Promise<JobResponse[]> => {
     const userId = window.localStorage.getItem("user_id");
 
     const response = await axios.get(
@@ -106,7 +107,17 @@ export const useCreateJob = () => {
     },
     {
       onSuccess: () => {
+        message.open({
+          type: "success",
+          content: "Posao je uspješno izrađen.",
+        });
         return queryClient.invalidateQueries(jobKeys.jobs);
+      },
+      onError: () => {
+        message.open({
+          type: "error",
+          content: "Greška kod izrade posla.",
+        });
       },
     }
   );
@@ -130,7 +141,17 @@ export const useUpdateJob = () => {
     },
     {
       onSuccess: () => {
+        message.open({
+          type: "success",
+          content: "Posao je uspješno spremljen.",
+        });
         return queryClient.invalidateQueries(jobKeys.jobs);
+      },
+      onError: () => {
+        message.open({
+          type: "error",
+          content: "Greška kod spremanja posla.",
+        });
       },
     }
   );

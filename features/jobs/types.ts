@@ -35,6 +35,7 @@ export interface Job {
   whyMe: string;
   requiredSkills: string[];
   optionalSkills: string[];
+  applications: number;
   date: string;
   updatedAt: string;
 }
@@ -44,6 +45,7 @@ export interface JobResponse {
   company: Company;
   date: string;
   modified: string;
+  applications: number;
   meta: {
     job_allowed_sc: boolean;
     job_featured: boolean;

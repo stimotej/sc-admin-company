@@ -19,6 +19,7 @@ const formatJob = (job: JobResponse): Job => ({
   whyMe: job.meta.job_why_me,
   requiredSkills: job.meta.job_required_skills,
   optionalSkills: job.meta.job_optional_skills,
+  applications: job.applications,
   date: job.date,
   updatedAt: job.modified,
 });

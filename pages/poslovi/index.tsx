@@ -45,6 +45,13 @@ const columns: ColumnsType<Job> = [
     ),
   },
   {
+    title: "Broj prijava",
+    dataIndex: "applications",
+    render: (applications) => (
+      <div className="text-blue-500 font-bold">{applications}</div>
+    ),
+  },
+  {
     title: "Objavljen",
     dataIndex: "date",
     defaultSortOrder: "descend",
@@ -56,6 +63,7 @@ const columns: ColumnsType<Job> = [
     dataIndex: "activeUntil",
     render: (activeUntil) => dayjs(activeUntil).format("DD.MM.YYYY"),
   },
+
   {
     title: "Status",
     dataIndex: "allowedSc",
