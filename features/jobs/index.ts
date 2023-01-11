@@ -97,8 +97,8 @@ export const useCreateJob = () => {
       const response = await axios.post(
         "http://161.53.174.14/wp-json/wp/v2/jobs",
         {
-          title: job.job_title,
-          excerpt: job.job_description,
+          title: job.title,
+          excerpt: job.description,
           status: "publish",
           meta: job,
         }
@@ -131,9 +131,9 @@ export const useUpdateJob = () => {
       const response = await axios.post(
         "http://161.53.174.14/wp-json/wp/v2/jobs/" + id,
         {
-          title: job.job_title,
-          slug: job.job_title,
-          excerpt: job.job_description,
+          title: job.title,
+          slug: job.title,
+          excerpt: job.description,
           meta: job,
         }
       );

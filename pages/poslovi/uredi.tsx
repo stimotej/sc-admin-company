@@ -23,19 +23,19 @@ const EditJobPage = () => {
   const jobId = router.query?.id;
 
   const initialValues = {
-    job_title: "",
-    job_type: "privremeni_posao",
-    job_location: "",
-    job_range: [],
-    job_payment_rate: 4.38,
-    job_payment_rate_max: 4.38,
-    job_work_hours: 1,
-    job_positions: 1,
-    job_active_until: "",
-    job_description: "",
-    job_why_me: "",
-    job_required_skills: "",
-    job_optional_skills: "",
+    title: "",
+    type: "privremeni_posao",
+    city: "",
+    range: [],
+    payment_rate: 4.38,
+    payment_rate_max: 4.38,
+    work_hours: 1,
+    positions: 1,
+    active_until: "",
+    description: "",
+    why_me: "",
+    skills: "",
+    labels: "",
   };
 
   const {
@@ -48,29 +48,27 @@ const EditJobPage = () => {
     refetchOnWindowFocus: false,
     onSuccess: (data) => {
       form.setFieldsValue({
-        job_title: data?.title || "",
-        job_type: data?.type || "privremeni_posao",
-        job_location: data?.location || "",
-        job_range: [dayjs(data?.start), dayjs(data?.end)] || [],
-        job_payment_rate: data?.paymentRate || 4.38,
-        job_payment_rate_max: data?.paymentRateMax || 4.38,
-        job_work_hours: data?.workHours || 1,
-        job_positions: data?.positions || 1,
-        job_active_until: dayjs(data?.activeUntil) || "",
-        job_description: data?.description || "",
-        job_why_me: data?.whyMe || "",
-        job_required_skills: data?.requiredSkills?.join(", ") || "",
-        job_optional_skills: data?.optionalSkills?.join(", ") || "",
+        title: data?.title || "",
+        type: data?.type || "privremeni_posao",
+        city: data?.city || "",
+        range: [dayjs(data?.workStart), dayjs(data?.workEnd)] || [],
+        payment_rate: data?.paymentRate || 4.38,
+        payment_rate_max: data?.paymentRateMax || 4.38,
+        work_hours: data?.workHours || 1,
+        positions: data?.positions || 1,
+        active_until: dayjs(data?.activeUntil) || "",
+        description: data?.description || "",
+        why_me: data?.whyMe || "",
+        skills: data?.skills?.join(", ") || "",
+        labels: data?.labels?.join(", ") || "",
       });
     },
   });
 
   const [form] = Form.useForm();
   const fromHome = Form.useWatch("from_home", form);
-  const requiredSkills: string =
-    Form.useWatch("job_required_skills", form) || "";
-  const optionalSkills: string =
-    Form.useWatch("job_optional_skills", form) || "";
+  const requiredSkills: string = Form.useWatch("skills", form) || "";
+  const optionalSkills: string = Form.useWatch("labels", form) || "";
 
   const [paymentType, setPaymentType] = useState<string | number>(
     "Fiksna satnica"
@@ -82,10 +80,10 @@ const EditJobPage = () => {
   const handleCreateJob = (data: any) => {
     const jobData = {
       ...data,
-      job_start: dayjs(data?.job_range?.[0]).toISOString(),
-      job_end: dayjs(data?.job_range?.[1]).toISOString(),
-      job_active_until: dayjs(data?.job_active_until).toISOString(),
-      job_location: fromHome ? "FROM_HOME" : data.job_location,
+      work_start: dayjs(data?.range?.[0]).toISOString(),
+      work_end: dayjs(data?.range?.[1]).toISOString(),
+      active_until: dayjs(data?.active_until).toISOString(),
+      city: fromHome ? "FROM_HOME" : data.city,
     };
 
     if (jobId) {
@@ -147,14 +145,14 @@ const EditJobPage = () => {
         autoComplete="off"
       >
         <Form.Item
-          name="job_title"
+          name="title"
           label="Naziv"
           rules={[{ required: true, message: "Unesi naziv" }]}
         >
           <Input />
         </Form.Item>
 
-        <Form.Item name="job_type" label="Vrsta posla">
+        <Form.Item name="type" label="Vrsta posla">
           <Radio.Group>
             <Radio.Button value="privremeni_posao">
               Privremeni posao
@@ -166,7 +164,7 @@ const EditJobPage = () => {
         </Form.Item>
 
         <Form.Item
-          name="job_location"
+          name="city"
           label="Mjesto"
           rules={[{ required: true, message: "Unesi mjesto" }]}
           required={!fromHome}
@@ -179,7 +177,7 @@ const EditJobPage = () => {
         </Form.Item>
 
         <Form.Item
-          name="job_range"
+          name="range"
           label="Početak i kraj rada"
           rules={[
             {
@@ -203,7 +201,7 @@ const EditJobPage = () => {
 
         <div className="flex gap-4">
           <Form.Item
-            name="job_payment_rate"
+            name="payment_rate"
             label={
               paymentType === "Raspon satnice" ? "Minimalna satnica" : "Satnica"
             }
@@ -225,7 +223,7 @@ const EditJobPage = () => {
 
           {paymentType === "Raspon satnice" ? (
             <Form.Item
-              name="job_payment_rate_max"
+              name="payment_rate_max"
               label="Maksimalna satnica"
               rules={[
                 {
@@ -245,7 +243,7 @@ const EditJobPage = () => {
           ) : null}
 
           <Form.Item
-            name="job_work_hours"
+            name="work_hours"
             label="Broj sati"
             rules={[
               {
@@ -260,7 +258,7 @@ const EditJobPage = () => {
         </div>
 
         <Form.Item
-          name="job_positions"
+          name="positions"
           label="Broj otvorenih pozicija"
           rules={[
             {
@@ -273,7 +271,7 @@ const EditJobPage = () => {
         </Form.Item>
 
         <Form.Item
-          name="job_active_until"
+          name="active_until"
           label="Trajanje prijava do"
           rules={[
             {
@@ -286,7 +284,7 @@ const EditJobPage = () => {
         </Form.Item>
 
         <Form.Item
-          name="job_description"
+          name="description"
           label="Opis posla"
           rules={[
             {
@@ -298,12 +296,12 @@ const EditJobPage = () => {
           <Input.TextArea rows={4} />
         </Form.Item>
 
-        <Form.Item name="job_why_me" label="Zašto tražimo tebe">
+        <Form.Item name="why_me" label="Zašto tražimo tebe">
           <Input.TextArea rows={4} />
         </Form.Item>
 
         <Form.Item
-          name="job_required_skills"
+          name="skills"
           label="Obavzena znanja (odvojena zarezom)"
           rules={[
             {
@@ -325,10 +323,7 @@ const EditJobPage = () => {
             ))}
         </div>
 
-        <Form.Item
-          name="job_optional_skills"
-          label="Poželjne vještine (odvojene zarezom)"
-        >
+        <Form.Item name="labels" label="Poželjne vještine (odvojene zarezom)">
           <Input className="w-full" placeholder="Dodaj poželjnu vještinu" />
         </Form.Item>
         <div className="mb-4 flex flex-wrap gap-2">

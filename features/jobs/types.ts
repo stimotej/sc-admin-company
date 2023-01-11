@@ -23,9 +23,9 @@ export interface Job {
   title: string;
   company: Company;
   type: string;
-  location: string;
-  start: string;
-  end: string;
+  city: string;
+  workStart: string;
+  workEnd: string;
   paymentRate: number;
   paymentRateMax: number;
   workHours: number;
@@ -33,8 +33,8 @@ export interface Job {
   activeUntil: string;
   description: string;
   whyMe: string;
-  requiredSkills: string[];
-  optionalSkills: string[];
+  skills: string[];
+  labels: string[];
   applications: number;
   date: string;
   updatedAt: string;
@@ -47,22 +47,22 @@ export interface JobResponse {
   modified: string;
   applications: number;
   meta: {
-    job_allowed_sc: boolean;
-    job_featured: boolean;
-    job_title: string;
-    job_type: string;
-    job_location: string;
-    job_start: string;
-    job_end: string;
-    job_payment_rate: number;
-    job_payment_rate_max: number;
-    job_work_hours: number;
-    job_positions: number;
-    job_active_until: string;
-    job_description: string;
-    job_why_me: string;
-    job_required_skills: string[];
-    job_optional_skills: string[];
+    allowed_sc: boolean;
+    featured: boolean;
+    title: string;
+    type: string;
+    city: string;
+    work_start: string;
+    work_end: string;
+    payment_rate: number;
+    payment_rate_max: number;
+    work_hours: number;
+    positions: number;
+    active_until: string;
+    description: string;
+    why_me: string;
+    skills: string[];
+    labels: string[];
   };
 }
 
